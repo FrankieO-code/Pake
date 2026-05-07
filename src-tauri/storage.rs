@@ -19,7 +19,7 @@ fn get_data_file_path() -> PathBuf {
 }
 
 #[command]
-pub async fn load_app_data() -> Result<Option<AppData>, String> {
+pub fn load_app_data() -> Result<Option<AppData>, String> {
     let path = get_data_file_path();
     if !path.exists() {
         return Ok(None);
@@ -32,7 +32,7 @@ pub async fn load_app_data() -> Result<Option<AppData>, String> {
 }
 
 #[command]
-pub async fn save_app_data(data: AppData) -> Result<(), String> {
+pub fn save_app_data(data: AppData) -> Result<(), String> {
     let path = get_data_file_path();
     let json_str = serde_json::to_string_pretty(&data)
         .map_err(|e| format!("序列化 JSON 失败: {}", e))?;
