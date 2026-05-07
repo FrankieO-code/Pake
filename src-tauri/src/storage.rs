@@ -25,14 +25,16 @@ pub fn load_app_data() -> Result<Option<AppData>, String> {
         return Ok(None);
     }
     let content = fs::read_to_string(&path).map_err(|e| format!("failed to read file: {}", e))?;
-    let data: AppData = serde_json::from_str(&content).map_err(|e| format!("failed to parse JSON: {}", e))?;
+    let data: AppData =
+        serde_json::from_str(&content).map_err(|e| format!("failed to parse JSON: {}", e))?;
     Ok(Some(data))
 }
 
 #[command]
 pub fn save_app_data(data: AppData) -> Result<(), String> {
     let path = get_data_file_path();
-    let json_str = serde_json::to_string_pretty(&data).map_err(|e| format!("failed to serialize JSON: {}", e))?;
+    let json_str = serde_json::to_string_pretty(&data)
+        .map_err(|e| format!("failed to serialize JSON: {}", e))?;
     fs::write(&path, json_str).map_err(|e| format!("failed to write file: {}", e))?;
     Ok(())
 }
