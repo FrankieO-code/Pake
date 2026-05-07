@@ -1,6 +1,7 @@
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 mod app;
 mod util;
+mod storage;   // 添加自定义存储模块
 
 use tauri::Manager;
 use tauri_plugin_window_state::Builder as WindowStatePlugin;
@@ -78,6 +79,8 @@ pub fn run_app() {
 
     app_builder
         .invoke_handler(tauri::generate_handler![
+            storage::load_app_data,
+            storage::save_app_data,
             download_file,
             download_file_by_binary,
             send_notification,
