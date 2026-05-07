@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
-use std::env;
+use serde::{Serialize, Deserialize};
 use std::fs;
 use std::path::PathBuf;
+use std::env;
 use tauri::command;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
@@ -24,17 +24,19 @@ pub fn load_app_data() -> Result<Option<AppData>, String> {
     if !path.exists() {
         return Ok(None);
     }
-    let content = fs::read_to_string(&path).map_err(|e| format!("读取文件失败: {}", e))?;
-    let data: AppData =
-        serde_json::from_str(&content).map_err(|e| format!("解析 JSON 失败: {}", e))?;
+    let content = fs::read_to_string(&path)
+        .map_err(|e| format!("读取文件失败: {}", e))?;
+    let data: AppData = serde_json::from_str(&content)
+        .map_err(|e| format!("解析 JSON 失败: {}", e))?;
     Ok(Some(data))
 }
 
 #[command]
 pub fn save_app_data(data: AppData) -> Result<(), String> {
     let path = get_data_file_path();
-    let json_str =
-        serde_json::to_string_pretty(&data).map_err(|e| format!("序列化 JSON 失败: {}", e))?;
-    fs::write(&path, json_str).map_err(|e| format!("写入文件失败: {}", e))?;
+    let json_str = serde_json::to_string_pretty(&data)
+        .map_err(|e| format!("序列化 JSON 失败: {}", e))?;
+    fs::write(&path, json_str)
+        .map_err(|e| format!("写入文件失败: {}", e))?;
     Ok(())
 }
